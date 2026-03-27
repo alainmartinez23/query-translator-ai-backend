@@ -9,7 +9,7 @@ async function handleQuery(req, res) {
 
   try {
     const result = await queryService.translateAndExecute(prompt);
-    return res.status(200).json({ data: result });
+    return res.status(200).json(result);
   } catch (err) {
     console.error('handleQuery error:', err);
     return res.status(500).json({ error: 'Internal server error' });
