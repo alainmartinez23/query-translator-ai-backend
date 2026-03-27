@@ -1,9 +1,11 @@
 require('dotenv').config();
 const express = require('express');
+const cors = require('cors');
 const queryController = require('./controllers/queryController');
 const { queryRateLimiter } = require('./middlewares/rateLimiter');
 
 const app = express();
+app.use(cors());
 app.use(express.json());
 
 app.set('trust proxy', 1);
