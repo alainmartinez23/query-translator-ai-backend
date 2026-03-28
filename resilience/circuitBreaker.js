@@ -1,7 +1,7 @@
 const CircuitBreaker = require('opossum');
 
 const CIRCUIT_BREAKER_OPTIONS = {
-  timeout: 5000,
+  timeout: 10000,
   errorThresholdPercentage: 50,
   resetTimeout: 10000,
 };

@@ -1,4 +1,5 @@
 const OpenAI = require('openai');
+const { createCircuitBreaker } = require('../resilience/circuitBreaker');
 
 const TIMEOUT_MS = parseInt(process.env.OPENAI_TIMEOUT_MS) || 10000;
 
@@ -53,18 +54,23 @@ Guidelines:
 - Prefer explicit JOIN syntax
 `;
 
+async function callOpenAI(prompt) {
+  const response = await client.responses.create({
+    model: 'gpt-4o-mini',
+    input: [
+      { role: 'system', content: SYSTEM_PROMPT },
+      { role: 'user', content: prompt },
+    ],
+    temperature: 0,
+  });
+  return response.output_text?.trim();
+}
+
+const breaker = createCircuitBreaker(callOpenAI);
+
 async function generateSQL(prompt) {
   try {
-    const response = await client.responses.create({
-      model: 'gpt-4o-mini',
-      input: [
-        { role: 'system', content: SYSTEM_PROMPT },
-        { role: 'user', content: prompt },
-      ],
-      temperature: 0,
-    });
-
-    const sql = response.output_text?.trim();
+    const sql = await breaker.fire(prompt);
 
     console.log('[OpenAI Response]', sql);
     if (!sql) throw new OpenAIError('Empty response from OpenAI');
