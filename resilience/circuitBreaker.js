@@ -3,8 +3,8 @@ const CircuitBreaker = require('opossum');
 const CIRCUIT_BREAKER_OPTIONS = {
   timeout: 9000,
   errorThresholdPercentage: 50,
-  resetTimeout: 5000,
-  volumeThreshold: 5
+  resetTimeout: 10000,
+  volumeThreshold: 2
 };
 
 function createCircuitBreaker(fn) {
