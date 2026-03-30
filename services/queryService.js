@@ -23,13 +23,16 @@ async function translateAndExecute(prompt) {
     return { sql: safeSQL, rows };
   } catch (err) {
     if (err instanceof OpenAIError) {
-      throw new Error('AI_ERROR');
+      console.error('[REAL OPENAI ERROR]', err);
+      throw err;
     }
 
     if (err instanceof SQLValidationError) {
+      console.error('[SQL VALIDATION ERROR]', err);
       throw new Error('INVALID_QUERY');
     }
 
+    console.error('[INTERNAL ERROR]', err);
     throw new Error('INTERNAL_ERROR');
   }
 }
