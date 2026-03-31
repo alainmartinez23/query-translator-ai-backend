@@ -5,7 +5,9 @@ const queryController = require('./controllers/queryController');
 const { queryRateLimiter } = require('./middlewares/rateLimiter');
 
 const app = express();
-app.use(cors());
+app.use(cors(
+  {origin: process.env.CORS_ORIGIN || '*'}
+));
 app.use(express.json());
 
 app.set('trust proxy', 1);
