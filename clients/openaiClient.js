@@ -77,12 +77,13 @@ Query behavior rules (VERY IMPORTANT):
      SELECT 'Query not related to database' AS error;
     
 7. Filtering by reason (IMPORTANT):
-   - If the user asks about absences with a specific reason (e.g. "vacation", "sick", "ill", "holiday"):
+   - If the user asks about absences with a specific reason (e.g. "Vacaciones", "Enfermedad", "Asuntos personales"):
      - ALWAYS filter using:
        WHERE absences.reason = '<value>'
    - Map common terms:
-       "vacation", "holiday" → 'vacation'
-       "sick", "ill", "medical leave" → 'sick'
+       "vacation", "holiday" → 'Vacaciones'
+       "sick", "ill", "medical leave" → 'Enfermedad'
+       "personal matters" → 'Asuntos personales'
    - NEVER return all absences if a reason is mentioned
    - ALWAYS apply a WHERE clause when a condition is implied
 
