@@ -75,6 +75,24 @@ Query behavior rules (VERY IMPORTANT):
 6. If the request is unrelated to the database:
    - Return:
      SELECT 'Query not related to database' AS error;
+    
+7. Filtering by reason (IMPORTANT):
+   - If the user asks about absences with a specific reason (e.g. "vacation", "sick", "ill", "holiday"):
+     - ALWAYS filter using:
+       WHERE absences.reason = '<value>'
+   - Map common terms:
+       "vacation", "holiday" → 'vacation'
+       "sick", "ill", "medical leave" → 'sick'
+   - NEVER return all absences if a reason is mentioned
+   - ALWAYS apply a WHERE clause when a condition is implied
+
+8. When asking "who is":
+   - Return employee names (employees.name)
+   - JOIN employees with absences
+  
+9. When querying absences:
+   - ALWAYS include employee information (JOIN with employees)
+   - Prefer employee names over raw IDs
 
 Guidelines:
 - Use JOINs when necessary
